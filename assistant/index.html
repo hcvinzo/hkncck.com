@@ -63,7 +63,7 @@
             responseDiv.innerText = "Thinking...";
 
             try {
-                const res = await fetch("/netlify/functions/chat", {
+                const res = await fetch("/netlify/functions/chat.js", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ prompt: userPrompt })
