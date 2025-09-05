@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ask Hakan's AI Assistant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f9f9f9;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 14px;
+            background: #2c3e50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background: #34495e;
+        }
+
+        #response {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            min-height: 50px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Ask Hakan's AI Assistant</h2>
+    <textarea id="prompt" placeholder="Describe your problem or need..."></textarea>
+    <br>
+    <button onclick="sendPrompt()">Ask</button>
+    <div id="response">Your answer will appear here...</div>
+
+    <script>
+        async function sendPrompt() {
+            const userPrompt = document.getElementById("prompt").value;
+            const responseDiv = document.getElementById("response");
+            responseDiv.innerText = "Thinking...";
+
+            try {
+                const res = await fetch("/.netlify/functions/chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ prompt: userPrompt })
+                });
+
+                const data = await res.json();
+                responseDiv.innerText = data.answer;
+            } catch (err) {
+                responseDiv.innerText = "Error: " + err.message;
+            }
+        }
+    </script>
+</body>
+
+</html>
